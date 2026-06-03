@@ -1,15 +1,317 @@
-<h1>inovagro</h1>
-<p>cultivar o futuro não é apenas produzir, é proteger. Conecte-se com o agro que respira sustentabilidade
-</p>
-
+<html>
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
+<html lang="pt-br"
+<head> 
+    <style>
+        /* Ajuste na seção principal para empilhar tudo no centro */
+        .main-content {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Essa regra vai garantir que o bloco do seu logo e botão fiquem perfeitamente centralizados na tela */
+        .brand-section {
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Ajuste na marca d'água para que o texto gigante preencha o fundo sem quebrar o layout */
+        .watermark-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            z-index: 1; /* Fica atrás do logo */
+        }
+        /* 1. Reset para limpar as margens padrões dos navegadores */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 2. O fundo do site: Preto com um toque bem sutil de verde agro */
+        body {
+            background-color: #040704;
+            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden; /* Trava a barra de rolagem lateral e vertical */
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* 3. Centralização absoluta do conteúdo na tela */
+        .main-content {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* 4. O segredo da Alura: As frases gigantes em marca d'água ao fundo */
+        .watermark-container {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none; /* Garante que o usuário consiga clicar nos botões da frente */
+        }
+
+        .watermark-text {
+            font-size: 4.5rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.03); /* Quase invisível, bem sutil */
+            line-height: 1.2;
+            max-width: 900px;
+            position: absolute;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out; /* Transição suave */
+        }
+
+        /* Quando a frase estiver ativa, ela aparece */
+        .watermark-text.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* 5. Estilo da Tela Inicial (Logo e Subtítulo) */
+        .brand-section {
+            z-index: 5;
+            transition: opacity 0.5s ease;
+        }
+
+        .center-logo {
+            font-size: 80px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 0 30px rgba(0, 255, 135, 0.2); /* Brilho verde suave atrás do logo */
+        }
+
+        .tagline {
+            color: #8a928a;
+            font-size: 16px;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        /* 6. O Botão de Ação (Estilo Tech Premium) */
+        .cta-button {
+            background-color: #00ff87; /* Verde neon tecnológico */
+            color: #040704;
+            border: none;
+            padding: 14px 30px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 255, 135, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 255, 135, 0.4);
+        }
+
+        /* 7. Truque para esconder elementos (usaremos na ferramenta e nas transições) */
+        .hidden {
+            display: none !important;
+        }
+
+        /* 8. Estilo da Caixinha da Ferramenta */
+        .tool-section {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 450px;
+            width: 90%;
+            z-index: 5;
+            text-align: left;
+        }
+
+        .tool-section h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #00ff87;
+        }
+
+        .tool-section p {
+            color: #a0a5a0;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 16px;
+            width: 100px;
+        }
+
+        .results {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .results p {
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .results strong {
+            color: #00ff87;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+    </style>
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Inovagro - Futuro Sustentável</title>
 </head>
 <body>
-    
-</body>
-</html>
+<main class="main content">
+
+  <div class="watermark-container">
+    <div class="watermark-text active" id="text1"> a tecnologia que tranforma a força do campo.</div>
+    <div class="watermak-text" id="text2">alta produtividade em hamonia com a terra.</div>
+  </div>
+
+ <div class="brand-section" id="welcome screen">
+    <h1 class="center logo">Inovagro</h1>
+    <p class="tagline">Tecnologia e Sustentabilidade em Movimento</p>
+
+    <button class="cta-button" id="open-tool-btn">Acessar Ferramenta Inteligente</button>
+ </div>
+
+ <div class="tool-section hidden" id="tool-screen">
+    <h3>Simulador de Impacto Agro-tech</h3>
+    <p>Insira o tamanho da sua área para calcular o ganho ecológico simulado</p>
+ <div class="input-group">
+    <input type="number" id="hectares-input" placeholder="Ex: 50" min="1">
+    <span>Hectares</span>
+</div>
+
+<div class="results">
+
+    <p>💧 Economia de água: <strong id="result-agua">0</strong> mil litros/ano</p>
+    <p>🌱 Carbono reduzido: <strong id="result-carbono">0</strong> toneladas/ano</p>
+</div>
+
+<button class="back-btn" id="close-tool-bnt">Voltar</button>
+
+ </div>
+
+  </main>
+
+
+  <script> 
+    //Mapeando os elementos da tela inicial e da ferramenta
+    const wellcomeScreen = document.getElementById('wellcome-screen');
+    const toolScreen = document.getElementById('tool-screen');
+    const openToolBtn = document.getElementById('open-tool-bnt');
+    const closeToolBtn = document.getElementById('close-tool-bnt');
+
+    //Função para abrir a ferramenta ao clicar no botão principal
+     openToolBtn.addEventListener('click', ()=>{
+       wellcomeScreen.classList.add('hidden'); //Esconde logo e botão inicial
+       toolScreen.classList.remove('hidden'); // Mostra o simulador
+       });
+
+       //função para Voltar para a tela inicial
+       closeToolBtn.addEventListener('click', () => {
+            toolScreen.classList.add('hidden');    // Esconde o simulador
+            welcomeScreen.classList.remove('hidden'); // Mostra o logo inicial novamente
+       });
+
+       // Mapeando as duas frases de fundo
+        const text1 = document.getElementById('text1');
+        const text2 = document.getElementById('text2');
+        
+        // Criando um temporizador de 5 segundos (5000 milissegundos)
+        setInterval(() => {
+            if (text1.classList.contains('active')) {
+                text1.classList.remove('active');
+                text2.classList.add('active');
+            } else {
+                text2.classList.remove('active');
+                text1.classList.add('active');
+            }
+        }, 5000);
+
+        // Mapeando os campos da ferramenta
+        const hectaresInput = document.getElementById('hectares-input');
+        const resultAgua = document.getElementById('result-agua');
+        const resultCarbono = document.getElementById('result-carbono');
+
+        // Escutando quando o usuário digita um número
+        hectaresInput.addEventListener('input', () => {
+            const hectares = parseFloat(hectaresInput.value);
+
+            // Se o campo estiver vazio ou for menor que zero, reseta os resultados para 0
+            if (isNaN(hectares) || hectares <= 0) {
+                resultAgua.innerText = '0';
+                resultCarbono.innerText = '0';
+                return;
+            }
+
+            // Simulação matemática dos dados ecológicos (valores fictícios por hectare)
+            const aguaEconomizada = hectares * 12;      // Ex: 12 mil litros por hectare
+            const carbonoReduzido = (hectares * 0.4).toFixed(1); // Ex: 0.4 toneladas por hectare
+
+            // Atualizando os valores na tela em tempo real
+            resultAgua.innerText = aguaEconomizada;
+            resultCarbono.innerText = carbonoReduzido;
+        });
+  </script>
+
+    </body>
+
+    </html>
