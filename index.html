@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inovagro - Futuro Sustentável</title>
+    <title>Inovagro - Agricultura de Precisão</title>
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
@@ -12,7 +12,7 @@
         }
 
         body {
-            background-color: #040704;
+            background-color: #0b110b;
             color: #ffffff;
             font-family: 'Segoe UI', sans-serif;
             overflow: hidden;
@@ -20,28 +20,19 @@
             width: 100vw;
         }
 
-        .video-background {
+        /* IMAGEM DE FUNDO - NITIDEZ AJUSTADA ATRÁS DE TUDO */
+        .bg-fundo-agro {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: 1;
+            background-image: url('Agro.png');
+            background-size: cover;
+            background-position: center;
+            z-index: -1; 
+            opacity: 0.7; /* Imagem mais visível no fundo */
             pointer-events: none;
-            overflow: hidden;
-            opacity: 0.25;
-            filter: brightness(45%) grayscale(10%);
-        }
-
-        .video-background iframe {
-            width: 100vw;
-            height: 56.25vw;
-            min-height: 100vh;
-            min-width: 177.77vh;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
         }
 
         .main-content {
@@ -52,89 +43,74 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-        }
-
-        .watermark-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            pointer-events: none;
-            z-index: 2;
-        }
-
-        .watermark-text {
-            font-size: 4.5rem;
-            font-weight: 800;
-            color: rgba(255, 255, 255, 0.04);
-            line-height: 1.2;
-            max-width: 900px;
-            position: absolute;
-            opacity: 0;
-            transform: scale(0.95);
-            transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
-        }
-
-        .watermark-text.active {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .brand-section {
             z-index: 5;
+        }
+
+        /* CORREÇÃO: Fundo preto removido e transformado em transparente */
+        .brand-section {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            background: transparent; /* 100% transparente */
+            padding: 20px;
+            max-width: 550px;
+            width: 90%;
         }
 
         .center-logo {
-            font-size: 80px;
-            font-weight: 800;
+            font-size: 65px;
+            font-weight: 900;
             letter-spacing: 4px;
             text-transform: uppercase;
-            text-shadow: 0 0 30px rgba(0, 255, 135, 0.2);
+            color: #00ff87;
+            /* Sombra escura forte atrás da letra para não sumir no fundo claro */
+            text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.9), -3px -3px 15px rgba(0, 0, 0, 0.9);
+            margin-bottom: 10px;
         }
 
         .tagline {
-            color: #8a928a;
-            font-size: 16px;
-            margin-bottom: 30px;
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 35px;
             letter-spacing: 1px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.9);
         }
 
         .cta-button {
             background-color: #00ff87;
             color: #040704;
             border: none;
-            padding: 14px 30px;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: 6px;
+            padding: 18px 40px;
+            font-size: 16px;
+            font-weight: 800;
+            border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0, 255, 135, 0.2);
-            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 320px;
+            box-shadow: 0 4px 25px rgba(0, 255, 135, 0.4);
+            transition: all 0.25s ease;
+            text-transform: uppercase;
         }
 
         .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(0, 255, 135, 0.4);
+            transform: translateY(-3px);
+            background-color: #00ffaa;
+            box-shadow: 0 6px 30px rgba(0, 255, 135, 0.7);
         }
 
+        /* SIMULADOR (Mantém um fundo sutil apenas para os números ficarem legíveis) */
         .tool-section {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 25, 15, 0.95);
+            backdrop-filter: blur(15px);
+            border: 2px solid #00ff87;
             padding: 30px;
             border-radius: 12px;
             max-width: 450px;
             width: 90%;
-            z-index: 5;
             text-align: left;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
         }
 
         .tool-section h3 {
@@ -157,8 +133,8 @@
         }
 
         .input-group input {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #00ff87;
             padding: 10px;
             border-radius: 6px;
             color: #fff;
@@ -167,7 +143,7 @@
         }
 
         .results {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.5);
             padding: 15px;
             border-radius: 6px;
             margin-bottom: 20px;
@@ -184,16 +160,18 @@
 
         .back-btn {
             background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             color: #fff;
-            padding: 8px 20px;
+            padding: 10px 20px;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s;
+            width: 100%;
+            text-align: center;
         }
 
         .back-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .hidden {
@@ -203,38 +181,31 @@
 </head>
 <body>
 
-    <div class="video-background">
-        <iframe src="https://www.youtube.com/embed/fA6orA-h0mQ?autoplay=1&mute=1&loop=1&playlist=fA6orA-h0mQ&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
+    <div class="bg-fundo-agro"></div>
 
     <main class="main-content">
         
-        <div class="watermark-container">
-            <div class="watermark-text active" id="text1">a tecnologia que transforma a força do campo.</div>
-            <div class="watermark-text" id="text2">alta produtividade em harmonia com a terra.</div>
-        </div>
-
         <div class="brand-section" id="welcome-screen">
             <h1 class="center-logo">Inovagro</h1>
             <p class="tagline">Tecnologia e Sustentabilidade em Movimento</p>
-            <button class="cta-button" id="open-tool-btn">Acessar Ferramenta Inteligente</button>
+            <button class="cta-button" id="open-tool-btn">Acessar Painel Interativo</button>
         </div>
 
         <div class="tool-section hidden" id="tool-screen">
-            <h3>Simulador de Impacto Agro-Tech</h3>
-            <p>Insira o tamanho da sua área para calcular o ganho ecológico simulado:</p>
+            <h3>Simulador Agro-Tech</h3>
+            <p>Insira a área da fazenda para calcular a estimativa de impacto:</p>
             
             <div class="input-group">
-                <input type="number" id="hectares-input" placeholder="Ex: 50" min="1">
+                <input type="number" id="hectares-input" placeholder="Ex: 100" min="1">
                 <span>Hectares</span>
             </div>
 
             <div class="results">
-                <p>💧 Economia de água: <strong id="result-agua">0</strong> mil litros/ano</p>
-                <p>🌱 Carbono reduzido: <strong id="result-carbono">0</strong> toneladas/ano</p>
+                <p>💧 Água economizada: <strong id="result-agua">0</strong> mil litros/ano</p>
+                <p>🌱 Redução de Carbono: <strong id="result-carbono">0</strong> ton/ano</p>
             </div>
 
-            <button class="back-btn" id="close-tool-btn">Voltar</button>
+            <button class="back-btn" id="close-tool-btn">Voltar ao Menu</button>
         </div>
 
     </main>
@@ -245,9 +216,6 @@
         const openToolBtn = document.getElementById('open-tool-btn');
         const closeToolBtn = document.getElementById('close-tool-btn');
         
-        const text1 = document.getElementById('text1');
-        const text2 = document.getElementById('text2');
-
         const hectaresInput = document.getElementById('hectares-input');
         const resultAgua = document.getElementById('result-agua');
         const resultCarbono = document.getElementById('result-carbono');
@@ -264,18 +232,6 @@
                 toolScreen.classList.add('hidden');
                 welcomeScreen.classList.remove('hidden');
             });
-        }
-
-        if (text1 && text2) {
-            setInterval(() => {
-                if (text1.classList.contains('active')) {
-                    text1.classList.remove('active');
-                    text2.classList.add('active');
-                } else {
-                    text2.classList.remove('active');
-                    text1.classList.add('active');
-                }
-            }, 5000);
         }
 
         if (hectaresInput && resultAgua && resultCarbono) {
