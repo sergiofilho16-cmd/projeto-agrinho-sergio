@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inovagro - Tecnologia e Agricultura de Precisão</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0b110b;
+            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* IMAGEM DE FUNDO FIXA */
+        .bg-fundo-agro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('Agro.png');
+            background-size: cover;
+            background-position: center;
+            z-index: -2; 
+            opacity: 0.85;
+            pointer-events: none;
+        }
+
+        /* Máscara escura */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(11, 17, 11, 0.4);
+            z-index: -1;
+            transition: background 0.5s ease;
+        }
+
+        .darker-overlay {
+            background: rgba(11, 17, 11, 0.85) !important;
+        }
+
+        /* ANIMAÇÃO PARA OS ELEMENTOS APARECEREM AOS POUCOS E RÁPIDO */
+        @keyframes fadeInQuick {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CLASSE PARA DIVIDIR A COR DO LOGO (VERDE E BRANCO) */
+        .text-white-part {
+            color: #ffffff !important;
+            text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.9);
+        }
+
+        /* TELA 1: PORTAL DE ENTRADA (SPLASH SCREEN) */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 200;
+            background: linear-gradient(135deg, #0b110b 0%, rgba(11, 17, 11, 0.8) 100%);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .splash-logo {
+            font-size: 85px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: #00ff87;
+            text-shadow: 0 0 30px rgba(0, 255, 135, 0.3);
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: fadeInQuick 0.4s ease forwards;
+            animation-delay: 0.1s;
+        }
+
+        .splash-tagline {
+            font-size: 20px;
+            color: #e0e5e0;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            opacity: 0;
+            animation: fadeInQuick 0.4s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .enter-btn {
+            background-color: transparent;
+            color: #00ff87;
+            border: 2px solid #00ff87;
+            padding: 18px 50px;
+            font-size: 18px;
+            font-weight: 800;
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 15px rgba(0, 255, 135, 0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInQuick 0.4s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        .enter-btn:hover {
+            background-color: #00ff87;
+            color: #040704;
+            box-shadow: 0 0 30px rgba(0, 255, 135, 0.5);
+            transform: scale(1.05);
+        }
+
+        /* BARRA DE NAVEGAÇÃO SUPERIOR */
+        .nav-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 40px;
+            z-index: 100;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-logo {
+            font-size: 26px;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #00ff87;
+            letter-spacing: 2px;
+        }
+
+        .info-keywords-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        .keyword-btn {
+            background: rgba(10, 25, 15, 0.75);
+            color: #00ff87;
+            border: 1px solid #00ff87;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.25s ease;
+        }
+
+        .keyword-btn:hover {
+            background: #00ff87;
+            color: #040704;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 255, 135, 0.5);
+        }
+
+        /* CONTAINER CONTEÚDO CENTRAL */
+        .main-content {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            padding: 20px;
+        }
+
+        /* TELA HOME APÓS ENTRAR */
+        .brand-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: transparent;
+            max-width: 650px;
+            width: 100%;
+        }
+
+        .center-logo {
+            font-size: 75px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #00ff87;
+            text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.9);
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 35px;
+            letter-spacing: 0.5px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.9);
+        }
+
+        .cta-button {
+            background-color: #00ff87;
+            color: #040704;
+            border: none;
+            padding: 18px 45px;
+            font-size: 17px;
+            font-weight: 800;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 25px rgba(0, 255, 135, 0.4);
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background-color: #00ffaa;
+            box-shadow: 0 6px 30px rgba(0, 255, 135, 0.7);
+        }
+
+        /* BOTÃO CANTO INFERIOR ESQUERDO */
+        .corner-back-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 40px;
+            background: rgba(10, 25, 15, 0.6);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 110;
+            transition: all 0.25s ease;
+        }
+
+        .corner-back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #ffffff;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+        }
+
+        /* TELA CENÁRIO SHOW DE AGRADECIMENTO */
+        .thank-you-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at center, #0d2a18 0%, #030703 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 300;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .thank-you-screen.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .thank-you-title {
+            font-size: 50px;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #00ff87;
+            letter-spacing: 4px;
+            text-shadow: 0 0 25px rgba(0, 255, 135, 0.6);
+            margin-bottom: 15px;
+            transform: scale(0.8);
+            animation: pulseGlow 1.8s infinite ease-in-out alternate;
+        }
+
+        .thank-you-text {
+            font-size: 18px;
+            color: #ffffff;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        @keyframes pulseGlow {
+            to {
+                transform: scale(1);
+                text-shadow: 0 0 45px rgba(0, 255, 135, 0.9), 0 0 10px #ffffff;
+            }
+        }
+
+        /* CONTAINER PAINEL INTERATIVO E AJUDA */
+        .interactive-wrapper {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            width: 100%;
+            max-width: 850px;
+        }
+
+        /* PAINÉIS DO SITE CONTROLES E EXPLICATIVOS */
+        .tool-section {
+            background: rgba(10, 25, 15, 0.95);
+            backdrop-filter: blur(15px);
+            border: 2px solid #00ff87;
+            padding: 35px;
+            border-radius: 12px;
+            max-width: 520px;
+            width: 100%;
+            text-align: left;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+
+        .tool-section h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #00ff87;
+            text-transform: uppercase;
+        }
+
+        .tool-section p {
+            color: #e0e5e0;
+            font-size: 15px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .info-scroll-container {
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-scroll-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .info-scroll-container::-webkit-scrollbar-thumb {
+            background: #00ff87;
+            border-radius: 4px;
+        }
+
+        .tech-topic {
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 255, 135, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .tech-topic strong {
+            color: #00ff87;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 16px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .input-group input {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #00ff87;
+            padding: 12px;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 16px;
+            width: 110px;
+        }
+
+        .results {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .results p {
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .results strong {
+            color: #00ff87;
+        }
+
+        /* BOTÃO TRANSPARENTE E TEXTO DE AJUDA À DIREITA */
+        .external-help-container {
+            position: absolute;
+            left: calc(50% + 260px + 20px); 
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 320px;
+            width: 100%;
+        }
+
+        .help-dropdown-btn {
+            background-color: transparent; 
+            color: #ffffff; 
+            border: none; 
+            padding: 12px 0px; 
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            width: 180px;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+            transition: opacity 0.2s ease;
+        }
+
+        .help-dropdown-btn:hover { opacity: 0.8; }
+
+        .help-text-box {
+            background: transparent; 
+            border: none; 
+            padding: 5px 0px;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #ffffff;
+            display: none;
+            text-align: left;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        .hidden { display: none !important; }
+        .fade-out { opacity: 0; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <div class="splash-screen" id="splash-page">
+        <h1 class="splash-logo">Inov<span class="text-white-part">agro</span></h1>
+        <p class="splash-tagline">Tecnologia Inteligente para o Desenvolvimento Sustentável no Campo</p>
+        <button class="enter-btn" id="enter-site-btn">Bem-vindo</button>
+    </div>
+
+    <div class="thank-you-screen" id="thank-you-page">
+        <h2 class="thank-you-title">Obrigado pela Visita!</h2>
+        <p class="thank-you-text">Inov<span class="text-white-part">agro</span> — Conectando o campo ao futuro.</p>
+    </div>
+
+    <div class="bg-fundo-agro"></div>
+    <div class="bg-overlay" id="overlay-layer"></div>
+
+    <button class="corner-back-btn hidden" id="global-back-btn">Voltar</button>
+
+    <nav class="nav-bar hidden" id="keywords-bar">
+        <div class="nav-logo">Inov<span class="text-white-part">agro</span></div>
+        <div class="info-keywords-container">
+            <button class="keyword-btn" onclick="showInfo('agrotech')">O que é AgroTech?</button>
+            <button class="keyword-btn" onclick="showInfo('missao')">Nossa Missão</button>
+            <button class="keyword-btn" onclick="showInfo('tecnologia')">Tecnologias</button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        
+        <div class="brand-section hidden" id="welcome-screen">
+            <h1 class="center-logo">Inov<span class="text-white-part">agro</span></h1>
+            <p class="tagline">O Futuro das Lavouras Conectadas e Sustentáveis</p>
+            <button class="cta-button" id="open-tool-btn">Simulador de AgroTech</button>
+        </div>
+
+        <div class="interactive-wrapper hidden" id="tool-screen-wrapper">
+            
+            <div class="tool-section" id="tool-screen">
+                <h3>Simulador Agro-Tech</h3>
+                <p>Insira a área da fazenda para calcular a estimativa de impacto obtido:</p>
+                
+                <div class="input-group">
+                    <input type="number" id="hectares-input" placeholder="Ex: 100" min="1">
+                    <span>Hectares</span>
+                </div>
+
+                <div class="results">
+                    <p>💧 Água economizada: <strong id="result-agua">0</strong> mil litros/ano</p>
+                    <p>🌱 Redução de Carbono: <strong id="result-carbono">0</strong> ton/ano</p>
+                </div>
+
+                <button class="back-btn" id="close-tool-btn">Voltar ao Menu</button>
+            </div>
+
+            <div class="external-help-container">
+                <button class="help-dropdown-btn" id="toggle-help-btn">
+                    Como funciona? <span id="arrow-icon">▼</span>
+                </button>
+                <div class="help-text-box" id="help-text-content"></div>
+            </div>
+
+        </div>
+
+        <div class="tool-section hidden" id="info-screen">
+            <h3 id="info-title">Título Informativo</h3>
+            
+            <div class="info-scroll-container" id="info-text-container">
+                <p id="info-text"></p>
+            </div>
+            
+            <button class="back-btn" id="close-info-btn">Voltar</button>
+        </div>
+
+    </main>
+
+    <script>
+        const splashPage = document.getElementById('splash-page');
+        const enterSiteBtn = document.getElementById('enter-site-btn');
+        const thankYouPage = document.getElementById('thank-you-page');
+        const globalBackBtn = document.getElementById('global-back-btn');
+        const overlayLayer = document.getElementById('overlay-layer');
+
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const toolScreenWrapper = document.getElementById('tool-screen-wrapper');
+        const infoScreen = document.getElementById('info-screen');
+        const keywordsBar = document.getElementById('keywords-bar');
+        
+        const openToolBtn = document.getElementById('open-tool-btn');
+        const closeToolBtn = document.getElementById('close-tool-btn');
+        const toggleHelpBtn = document.getElementById('toggle-help-btn');
+        const helpTextBox = document.getElementById('help-text-content');
+        const arrowIcon = document.getElementById('arrow-icon');
+        const closeInfoBtn = document.getElementById('close-info-btn');
+        
+        const hectaresInput = document.getElementById('hectares-input');
+        const resultAgua = document.getElementById('result-agua');
+        const resultCarbono = document.getElementById('result-carbono');
+
+        const infoData = {
+            agrotech: {
+                title: "O que é AgroTech?",
+                text: "<div class='tech-topic'><strong>Definição Geral</strong>AgroTech representa a fusão completa entre agricultura e tecnologia digital avançada. Consiste na aplicação de softwares, hardwares e metodologias científicas para transformar fazendas tradicionais em polos de produção otimizados e hiperconectados.</div><div class='tech-topic'><strong>Objetivo Principal</strong>Maximizar a eficiência da produção de alimentos enquanto reduzimos o impacto ambiental. A tecnologia mitiga perdas e previne riscos climáticos de forma autônoma.</div>"
+            },
+            missao: {
+                title: "Nossa Missão",
+                text: "<div class='tech-topic'><strong>Democratização Tecnológica</strong>Levar as mais potentes inovações da agricultura de precisão direto para a rotina do produtor, simplificando fluxos complexos de dados.</div><div class='tech-topic'><strong>Segurança Alimentar</strong>Auxiliar no crescimento econômico das safras de maneira inteligente, garantindo que o gerenciamento de recursos hídricos e do solo proteja o ecossistema do futuro.</div>"
+            },
+            tecnologia: {
+                title: "Funções & Inovações",
+                text: "<div class='tech-topic'><strong>Sensores IoT de Solo</strong>Monitores subterrâneos que avaliam umidade e condutividade elétrica da terra minuto a minuto, notificando sistemas para evitar irrigação excessiva.</div><div class='tech-topic'><strong>Drones Multiespectrais</strong>Varreduras aéreas em alta velocidade que leem a saúde clorofílica da plantação e isolam ervas daninhas ou pragas no início.</div><div class='tech-topic'><strong>Maquinários Inteligentes</strong>Tratores guiados por telemetria GPS que distribuem fertilizantes com dosagem variável, gastando o mínimo necessário.</div>"
+            }
+        };
+
+        const textoExplicativoCalculo = "A estimativa é baseada em médias reais de fazendas automatizadas. Cada hectare monitorado economiza anualmente cerca de 12 mil litros de água via irrigação inteligente e reduz 0.4 toneladas de CO₂ ao otimizar o uso do maquinário.";
+
+        let typingInterval = null;
+
+        // Entrar no site através do botão Bem-vindo
+        if (enterSiteBtn) {
+            enterSiteBtn.addEventListener('click', () => {
+                splashPage.classList.add('fade-out');
+                setTimeout(() => {
+                    splashPage.style.display = 'none';
+                    keywordsBar.classList.remove('hidden');
+                    welcomeScreen.classList.remove('hidden');
+                    globalBackBtn.classList.remove('hidden'); 
+                }, 600);
+            });
+        }
+
+        // Ação do Botão "Voltar" do canto inferior esquerdo
+        if (globalBackBtn) {
+            globalBackBtn.addEventListener('click', () => {
+                welcomeScreen.classList.add('hidden');
+                toolScreenWrapper.classList.add('hidden');
+                infoScreen.classList.add('hidden');
+                keywordsBar.classList.add('hidden');
+                globalBackBtn.classList.add('hidden');
+
+                // Ativa o showzinho cenário de agradecimento
+                thankYouPage.classList.add('active');
+
+                // Aguarda 3 segundos no show de agradecimento e retorna à tela de boas-vindas original
+                setTimeout(() => {
+                    thankYouPage.classList.remove('active');
+                    
+                    // Reseta as propriedades da Splash Screen e torna a mostrá-la
+                    splashPage.style.display = 'flex';
+                    splashPage.classList.remove('fade-out');
+                }, 3000);
+            });
+        }
+
+        if (toggleHelpBtn) {
+            toggleHelpBtn.addEventListener('click', () => {
+                if (helpTextBox.style.display === "none" || helpTextBox.style.display === "") {
+                    helpTextBox.style.display = "block";
+                    arrowIcon.innerText = "▲";
+                    let charIndex = 0;
+                    helpTextBox.innerHTML = "";
+                    clearInterval(typingInterval);
+                    typingInterval = setInterval(() => {
+                        if (charIndex < textoExplicativoCalculo.length) {
+                            helpTextBox.innerHTML += textoExplicativoCalculo.charAt(charIndex);
+                            charIndex++;
+                        } else {
+                            clearInterval(typingInterval);
+                        }
+                    }, 12);
+                } else {
+                    helpTextBox.style.display = "none";
+                    arrowIcon.innerText = "▼";
+                    clearInterval(typingInterval);
+                    helpTextBox.innerHTML = "";
+                }
+            });
+        }
+
+        function showInfo(key) {
+            welcomeScreen.classList.add('hidden');
+            toolScreenWrapper.classList.add('hidden');
+            overlayLayer.classList.add('darker-overlay');
+            
+            document.getElementById('info-title').innerText = infoData[key].title;
+            document.getElementById('info-text').innerHTML = infoData[key].text;
+            
+            infoScreen.classList.remove('hidden');
+        }
+
+        if (closeInfoBtn) {
+            closeInfoBtn.addEventListener('click', () => {
+                infoScreen.classList.add('hidden');
+                overlayLayer.classList.remove('darker-overlay');
+                welcomeScreen.classList.remove('hidden');
+            });
+        }
+
+        if (openToolBtn) {
+            openToolBtn.addEventListener('click', () => {
+                welcomeScreen.classList.add('hidden');
+                infoScreen.classList.add('hidden');
+                keywordsBar.classList.add('hidden'); 
+                toolScreenWrapper.classList.remove('hidden');
+            });
+        }
+
+        if (closeToolBtn) {
+            closeToolBtn.addEventListener('click', () => {
+                clearInterval(typingInterval);
+                helpTextBox.style.display = "none";
+                arrowIcon.innerText = "▼";
+                toolScreenWrapper.classList.add('hidden');
+                welcomeScreen.classList.remove('hidden');
+                keywordsBar.classList.remove('hidden'); 
+            });
+        }
+
+        if (hectaresInput && resultAgua && resultCarbono) {
+            hectaresInput.addEventListener('input', () => {
+                const hectares = parseFloat(hectaresInput.value);
+
+                if (isNaN(hectares) || hectares <= 0) {
+                    resultAgua.innerText = '0';
+                    resultCarbono.innerText = '0';
+                    return;
+                }
+
+                const aguaEconomizada = hectares * 12;
+                const carbonoReduzido = (hectares * 0.4).toFixed(1);
+
+                resultAgua.innerText = aguaEconomizada;
+                resultCarbono.innerText = carbonoReduzido;
+            });
+        }
+    </script>
+
+</body>
+</html>
